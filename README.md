@@ -1,2 +1,2 @@
 # Project2020
-Create branch allocation project
+Online Admission and Counseling System.
