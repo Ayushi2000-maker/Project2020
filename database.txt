@@ -1,0 +1,127 @@
+create table selected_students
+(
+   ExamRollNo Numeric(10) Primary Key,
+   SName Varchar(30) Not Null, 
+   UserName Varchar(10) Not Null,
+   Password Varchar(10) Not Null,
+   EMarks Numeric(5) Not Null Check(EMarks>0),
+   Rank Numeric(5) Not Null,
+   Unique(Username,Password,Rank)
+);
+
+create table Dlogin
+( 
+    Duid Varchar(5),
+    Dpwd Varchar(5),
+    Primary key(Duid,Dpwd)
+);
+
+create table ALogin
+(
+   Auid Varchar(5),
+   Apwd varchar(5),
+   Primary Key(Auid,Apwd)
+);
+
+create table Personal_Details
+(
+   pid integer generated always as identity(Start with 1,Increment by 1),
+   SName varchar(30) not null,
+   AdhaarNo Numeric(12) Not Null,
+   FName varchar(30) Not Null,
+   FOcc varchar(30) Not Null,
+   MName varchar(30)  Not Null,
+   MOcc varchar(30) Not Null,
+   Gender varchar(6) not null,
+   Caste varchar(15) not null,
+   Religion varchar(10) not null,
+   ExamRollNo Numeric(10) references selected_students(examrollno),
+   Nationality Varchar(10),
+   DATE1 varchar(12),
+   constraint primary_key Primary key(pid),
+   unique(AdhaarNo,ExamRollNo) 
+)
+
+create table contact_details
+( 
+   ExamRollNo Numeric(10) References selected_students(ExamRollNo),
+   cid integer primary key generated always as identity(Start with 1,Increment by 1), 
+   EmailId Varchar(40),
+   Address1 Varchar(20),
+   Address2 Varchar(20),
+   City Varchar(20),
+   State Varchar(20),
+   PinCode Numeric(6),
+   PhoneNo Numeric(10),
+   GNo Numeric(10),
+   Unique(EmailId,ExamRollNo)
+);
+
+create table educational_details
+( 
+   ExamRollNo Numeric(10) References selected_students(ExamRollNo),
+   eid integer primary key generated always as identity(Start with 1,Increment by 1), 
+   TenMarks Numeric(3) Not Null,
+   TweMarks Numeric(3) Not Null,
+   Photo BLOB Not Null
+   unique(ExamRollNo)
+)
+
+create table medical_details
+(
+   ExamRollNo Numeric(10) References selected_students(ExamRollNo),
+   MNo integer Primary Key generated always as identity(Start with 1,Increment by 1),
+   SName Varchar(30) Not Null,
+   Height Varchar(5) Not Null,
+   Weight Varchar(3) Not Null,
+   dob varchar(12) Not Null,
+   mhistory varchar(100),
+   recomm Varchar(100),
+   unique(ExamRollNo)
+);
+
+create table branch_preferences
+(
+   ExamRollNo Numeric(10) References selected_students(ExamRollNo),
+   BNo integer Primary Key generated always as identity(Start with 10001,Increment by 1),
+   Rank Numeric(10),
+   P1 varchar(70) Not Null,
+   P2 varchar(70) Not Null,
+   P3 varchar(70) Not Null,
+   P4 varchar(70) Not Null,
+   P5 varchar(70) Not Null,
+   P6 varchar(70) Not Null,
+   P7 varchar(70) Not Null,
+   P8 varchar(70) Not Null,
+   unique(ExamRollNo,Rank) 
+);
+
+create table final_table
+(
+   ExamRollNo Numeric(10) References selected_students(ExamRollNo),
+   FNo integer Primary Key generated always as identity(Start with 10001,Increment by 1),
+   Name Varchar(30) Not Null,
+   Branch_alloted varchar(10)
+);
+
+
+
+
+Create table Register
+(  
+   ExamRollNo Numeric(10) References selected_students(ExamRollNo),
+   RNo integer Primary Key generated always as identity(Start with 10001,Increment by 1),
+   SName Varchar(30)
+);
+
+
+
+
+
+
+
+
+Statement stmt4=con.createStatement();
+              int z=stmt4.executeUpdate("insert into selected_students1 select * from selected_students order by rank");
+              if(z>0)
+                    out.println("success");
